@@ -1,0 +1,28 @@
+{
+  "name": "shark-transformer",
+  "version": "0.0.1",
+  "description": "shark-transformer =================",
+  "main": "lib/transformer.js",
+	"scripts": {
+		"test": "node_modules/.bin/mocha --harmony ./test"
+	},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shark-js/shark-transformer.git"
+  },
+  "author": "Vadim Goncharov",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/shark-js/shark-transformer/issues"
+  },
+  "homepage": "https://github.com/shark-js/shark-transformer",
+	"engines": {
+		"node": ">=0.11.14 <0.12",
+		"npm": ">=2.1.5"
+	},
+	"engineStrict": true,
+	"devDependencies": {
+		"chai": "^1.9.2",
+		"mocha": "^2.0.1"
+	}
+}
