@@ -9,8 +9,8 @@ module.exports = Transformer.extend({
 		this.tree.forEach(function(destPath, srcFiles) {
 			srcFiles.forEach(function(srcFile) {
 				try {
-					srcFile.content(fs.readFileSync(srcFile.src()).toString());
-					fs.writeFileSync(destPath, srcFile.content() + ' new');
+					srcFile.setContent(fs.readFileSync(srcFile.getSrc()).toString());
+					fs.writeFileSync(destPath, srcFile.getContent() + ' new');
 				}
 				catch (error) {
 					throw new VError(error);

@@ -8,19 +8,20 @@ const Logger    = require('shark-logger');
 const path      = require('path');
 const fs        = require('fs');
 const VError    = require('verror');
+const sprintf   = require('extsprintf').sprintf;
 
 const ToTreeTransformer     = require('./transformers/to-tree-transformer');
 const ToFilesTransformer    = require('./transformers/to-files-transformer');
 
 describe('Initialization', function() {
-	before(function() {
-		this.filesTree = new Tree({
-			'dest/path': 'src/path'
-		});
-
+	before(function *() {
 		this.logger = Logger({
 			name: 'TransformerTestLogger'
 		});
+
+		this.filesTree = yield Tree({
+			'dest/path': 'src/path'
+		}, this.logger);
 	});
 
 	it('should throw exception if tree is invalid type', function *(done) {
@@ -55,39 +56,56 @@ describe('Initialization', function() {
 });
 
 describe('ToTreeTranformer',function(){
-	before(function() {
-		this.filesTree = new Tree({
-			'dest/path': 'src/path'
-		});
-
+	before(function *() {
 		this.logger = Logger({
 			name: 'TransformerTestLogger'
 		});
+
+		var files = {};
+		var dest = path.join(__dirname, './fixtures/dest.txt');
+		var src = path.join(__dirname, './fixtures/src.txt');
+		files[dest] = src;
+		this.dest = dest;
+		this.src = src;
+		this.filesTree = yield Tree(files, this.logger);
 	});
 
 	it('should transform "src/path" to "src/path/new"',function *(){
-		var tree = yield ToTreeTransformer.treeToTree(this.filesTree, this.logger);
-		expect(tree.getSrcCollectionByDest('dest/path').firstSrcFile().src()).equal('src/path/new');
+		try {
+			var tree = yield ToTreeTransformer.treeToTree(this.filesTree, this.logger);
+		}
+		catch (error) {
+			console.error(sprintf('%r', error));
+		}
+
+		expect(tree.getSrcCollectionByDest(this.dest).getFirstFile().getSrc()).equal(this.src.replace('.txt', '.new.txt'));
 	});
 });
 
-describe('ToFilesTranformer',function(){
-	before(function() {
-		var files = {};
-		var dest = path.join(__dirname, './fixtures/dest.txt');
-		files[dest] = path.join(__dirname, './fixtures/src.txt');
-		this.dest = dest;
-		this.filesTree = new Tree(files);
-
+describe('ToFilesTranformer',function (){
+	before(function *() {
 		this.logger = Logger({
 			name: 'TransformerTestLogger'
 		});
+
+		var files = {};
+		var dest = path.join(__dirname, './fixtures/dest.txt');
+		var src = path.join(__dirname, './fixtures/src.txt');
+		files[dest] = src;
+		this.dest = dest;
+		this.src = src;
+		this.filesTree = yield Tree(files, this.logger);
 
 		fs.writeFileSync(dest, '');
 	});
 
 	it('should save content from src to dest',function *(){
-		yield ToFilesTransformer.treeToFiles(this.filesTree, this.logger);
+		try {
+			var tree = yield ToFilesTransformer.treeToFiles(this.filesTree, this.logger);
+		}
+		catch (error) {
+			console.error(sprintf('%r', error));
+		}
 		expect(fs.readFileSync(this.dest).toString()).equal('hello world new');
 	});
 });

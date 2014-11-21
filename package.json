@@ -25,6 +25,7 @@
     "chai": "^1.9.2",
     "co": "^4.0.0",
     "co-mocha": "^1.1.0",
+    "extsprintf": "^1.2.1",
     "mocha": "^2.0.1"
   },
   "dependencies": {
