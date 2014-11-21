@@ -67,7 +67,7 @@ describe('ToTreeTranformer',function(){
 
 	it('should transform "src/path" to "src/path/new"',function *(){
 		var tree = yield ToTreeTransformer.treeToTree(this.filesTree, this.logger);
-		expect(tree.getSrcFilesByDest('dest/path').firstSrcFile().src()).equal('src/path/new');
+		expect(tree.getSrcCollectionByDest('dest/path').firstSrcFile().src()).equal('src/path/new');
 	});
 });
 
