@@ -72,7 +72,9 @@ describe('ToTreeTranformer',function(){
 
 	it('should transform "src/path" to "src/path/new"',function *(){
 		try {
-			var tree = yield ToTreeTransformer.treeToTree(this.filesTree, this.logger);
+			var tree = yield ToTreeTransformer.treeToTree(this.filesTree, this.logger, {
+				suffix: 'new'
+			});
 		}
 		catch (error) {
 			console.error(sprintf('%r', error));
@@ -101,7 +103,9 @@ describe('ToFilesTranformer',function (){
 
 	it('should save content from src to dest',function *(){
 		try {
-			var tree = yield ToFilesTransformer.treeToFiles(this.filesTree, this.logger);
+			var tree = yield ToFilesTransformer.treeToFiles(this.filesTree, this.logger, {
+				suffix: 'new'
+			});
 		}
 		catch (error) {
 			console.error(sprintf('%r', error));
